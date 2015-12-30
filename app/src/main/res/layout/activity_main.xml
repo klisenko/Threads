@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.android.screwthreads.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="Arial"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            android:text="special unjs thread"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Nominal Size:" />
+
+            <EditText
+                android:id="@+id/nominal_size"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:hint="size"
+                android:inputType="numberDecimal"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:singleLine="true"
+                android:textColor="#3F51B5"
+                android:selectAllOnFocus="true"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Pitch:" />
+
+            <EditText
+                android:id="@+id/pitch"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:hint="pitch"
+                android:inputType="number"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:singleLine="true"
+                android:textColor="#3F51B5"
+                android:selectAllOnFocus="true"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[threads/in]" />
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="Arial"
+            android:text="EXTERNAL THREAD"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="0dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="" />
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#000000"
+                android:textStyle="italic"
+                android:text="[MIN]"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="        " />
+
+            <TextView
+                android:id="@+id/std_major_max"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#000000"
+                android:textStyle="italic"
+                android:text="[MAX]"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="0dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Major Diameter\n(standard)" />
+
+            <TextView
+                android:id="@+id/std_ext_major_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/std_ext_major_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#607D8B"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Major Diameter\n(no interference)" />
+
+            <TextView
+                android:id="@+id/no_ext_major_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/no_ext_major_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#607D8B"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Major Diameter\n(.0002 interference)" />
+
+            <TextView
+                android:id="@+id/some_ext_major_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/some_ext_major_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#607D8B"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Pitch Diameter" />
+
+            <TextView
+                android:id="@+id/ext_pitch_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/ext_pitch_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#607D8B"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Minor Diameter" />
+
+            <TextView
+                android:id="@+id/ext_minor_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/ext_minor_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#607D8B"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Root Radius" />
+
+            <TextView
+                android:id="@+id/ext_root_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="0.0094"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/ext_root_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="0.0112"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="Arial"
+            android:text="internal thread"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="0dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Major Diameter" />
+
+            <TextView
+                android:id="@+id/int_major_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/int_major_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#607D8B"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Pitch Diameter" />
+
+            <TextView
+                android:id="@+id/int_pitch_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/int_pitch_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#607D8B"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Minor Diameter" />
+
+            <TextView
+                android:id="@+id/int_minor_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/int_minor_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="2.1156"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#607D8B"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Root Radius" />
+
+            <TextView
+                android:id="@+id/int_root_min"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="0.0060"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="   /   " />
+
+            <TextView
+                android:id="@+id/int_root_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="0dp"
+                android:textColor="#3F51B5"
+                android:text="0.0080"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="[in]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="thdNote"
+                android:text="thread note" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="extFigure"
+                android:text="ext figure" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="intFigure"
+                android:text="int figure" />
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
+
+
