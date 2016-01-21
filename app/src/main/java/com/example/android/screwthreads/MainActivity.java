@@ -1,11 +1,15 @@
 package com.example.android.screwthreads;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
@@ -22,21 +26,36 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    double sizeNominal = .2500;
-    int inputPitch = 16;
+    public static double sizeNominal = .2500;
+    public static int inputPitch = 16;
     static double MAX_ROOT_INT_THD = .008;
+    private String[] tableValues = new String[22];
 
-    DecimalFormat dfCeiling = new DecimalFormat("0.0000");
-    DecimalFormat dfFloor = new DecimalFormat("0.0000");
-
-
+    public final static String VALUE = "myValue";
+    public static Thread thread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+            double size = savedInstanceState.getDouble("sizeNominal");
+            int pitch = savedInstanceState.getInt("inputPitch");
+            sizeNominal = size;
+            inputPitch = pitch;
+
+            Log.v("MainActivity", "onCreate - Size " + sizeNominal);
+        }
+
         super.onCreate(savedInstanceState);
+
+        Log.v("MainActivity", "onCreate after - Pitch " + inputPitch);
+        Log.v("MainActivity", "onCreate after - Size " + sizeNominal);
+        thread = new Thread(sizeNominal, inputPitch);
+        double[] values = thread.getValues();
+
+        Log.v("MainActivity", "onCreate - External Thread Major Diameter Standard Minimum " + values[0]);
+
         setContentView(R.layout.activity_main);
-
-
 
         //Text Change Listener - pitch input
         EditText pitchInput = (EditText)findViewById(R.id.pitch);
@@ -49,6 +68,48 @@ public class MainActivity extends AppCompatActivity {
         //On Focus Change Listener
         //threadSizeInput.setOnFocusChangeListener(mThreadInputListener);
 
+        updateValues(thread);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+
+        savedInstanceState.putDouble("sizeNominal", sizeNominal);
+        savedInstanceState.putInt("inputPitch", inputPitch);
+
+
+
+        double size = savedInstanceState.getDouble("sizeNominal");
+
+        Log.v("MainActivity", "onSaveInstanceState - Pitch " + inputPitch);
+        Log.v("MainActivity", "onSaveInstanceState - Size " + size);
 
     }
 
@@ -69,14 +130,12 @@ public class MainActivity extends AppCompatActivity {
                 pitch = "1";
             }
 
-
             //InputPitch = Double.parseDouble(pitch);
             inputPitch = Integer.parseInt(pitch);
             Log.v("MainActivity", "Name: " + inputPitch);
 
-
-
-            updateValues();
+            thread.setValues(sizeNominal, inputPitch);
+            updateValues(thread);
         }
 
         @Override
@@ -106,13 +165,15 @@ public class MainActivity extends AppCompatActivity {
                 threadSize = "0.0000";
             }
 
-
             sizeNominal = Double.parseDouble(threadSize);
             //Log.v("MainActivity", "Name: " + sizeNominal);
             Log.v("MainActivity", "Name: " + threadSize);
             //Log.v("MainActivity", "Name: " + strLength);
 
-            updateValues();
+
+
+            thread.setValues(sizeNominal, inputPitch);
+            updateValues(thread);
 
             //Major Diameter Min (standard)
             //TextView stdExtMajorMin = (TextView) findViewById(R.id.std_ext_major_min);
@@ -127,264 +188,92 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-//    // Create an anonymous implementation of OnClickListener
-//    private View.OnFocusChangeListener mThreadInputListener = new View.OnFocusChangeListener() {
-//        public void onFocusChange(View v, boolean hasFocus) {
-//            //EditText threadInput = (EditText) findViewById(R.id.nominal_size);
-//            EditText threadInput = (EditText) v;
-//            threadInput.setText("5555");
-//            threadInput.selectAll();
-//            Log.v("MainActivity", "Name: " + hasFocus);
-////            String sizeThread = threadInput.getText().toString();
-////
-////            //Major Diameter Max (standard)
-////            TextView stdExtMajorMax = (TextView) findViewById(R.id.std_ext_major_max);
-////            stdExtMajorMax.setText(sizeThread);
-////            //Log.v("MainActivity", "Name: " + 5.555);
-//        }
-//    };
+    private void updateValues(Thread thread) {
 
-    private void updateValues() {
+        ConvertToString stringClass = new ConvertToString(thread);
+        String[] valuesStr;
+        valuesStr = stringClass.getStrings(thread);
 
-        dfCeiling.setRoundingMode(RoundingMode.CEILING);
-        dfFloor.setRoundingMode(RoundingMode.FLOOR);
+        Log.v("MainActivity", "Major Dia.: " + valuesStr[0]);
 
-        double extMajDiaStdMin = calcMajorDiaStdMin();
-        double minMajDiaRed = minMajDiaReduc();
-        double tolClass2 = toleranceClass2A(sizeNominal, inputPitch);
-//        Log.v("MainActivity", "tolerance: " + tolClass2);
-        double tolClass3 = tolClass2 * 0.75;
-        double tolClass3B = tolClass2 * 0.975;
-        Log.v("MainActivity", "tolerance Class 3B: " + tolClass3B);
-
-        double extMajDiaNoIntMax = maxMajDia(minMajDiaRed, .000);
-        double extMajDiaNoIntMin = minMajDia(extMajDiaNoIntMax, extMajDiaStdMin);
-
-        double extMajDia0002Max = maxMajDia(minMajDiaRed, .002);
-        double extMajDia0002Min = minMajDia(extMajDia0002Max, extMajDiaStdMin);
-
-        double extPitchDiaMax = mExtPitchDiaMax(sizeNominal, inputPitch);
-//        Log.v("MainActivity", "pitch diameter max: " + extPitchDiaMax);
-//        Log.v("MainActivity", "pitch diameter max: " + String.format("%.4f", extPitchDiaMax));
-
-        double extPitchDiaMin = extPitchDiaMax - tolClass3;
-//        Log.v("MainActivity", "pitch diameter min: " + extPitchDiaMin);
-//        Log.v("MainActivity", "pitch diameter min: " + String.format("%.4f", extPitchDiaMin));
-
-        double extMinorDiaMin = extPitchDiaMin - 0.5658 / inputPitch;
-        double extMinorDiaMax = extPitchDiaMax - 0.50518 / inputPitch;
-
-        double extRootMin = 0.15011 / inputPitch;
-        double extRootMax = 0.18042 / inputPitch;
-
-        double intPitchMin = sizeNominal - 0.649519 / inputPitch;
-        double intPitchMax = intPitchMin + tolClass3B;
-
-        double intMajMin = 0.866025 / inputPitch * 11/24 + intPitchMax;
-
-        //Minor Diameter Tolerances
-//        double minorDiaTolRaw = (0.05*Math.pow(1.0/inputPitch, 2.0/3) + 0.03*(1.0/inputPitch)/sizeNominal)-0.002;
-//        double minorDiaTolLimitUpper = 0.259809 / inputPitch;
-//        double minorDiaTolLimitLower = 0.135315 / inputPitch;
-//        double minorDiaTol12OrLower = 0.12 / inputPitch;
-
-
-
-
-
-
-        double intMinorMin = sizeNominal - 0.97428 / inputPitch;
-        double minDiaTolFinal = mMinDiaTolFinal(sizeNominal, inputPitch);
-        double intMinorMax = intMinorMin + minDiaTolFinal;
-        Log.v("MainActivity", "Minor Dia Tol pitch 12 or less: " + minDiaTolFinal);
-
-
-
-//        MathContext roundUp4 = new MathContext(4, RoundingMode.UP);
-//        BigDecimal answer1 = new BigDecimal(extMinorDiaMin, roundUp4);
-//        Log.v("MainActivity", "Minor Diameter min Rounded with BigDecimal: " + answer1.round(roundUp4));
-
-
-
-
-        //Log.v("MainActivity", "Nominal Size Rounded UP: " + dfCeiling.format(sizeNominal));
-
-
-
-        //Log.v("MainActivity", "Nominal Size Rounded DOWN: " + dfFloor.format(sizeNominal));
-
-
-
-//        double extRootMinRoundUp = Math.nextUp(extRootMin);
-//        Log.v("MainActivity", "Root Radius Min: " + extRootMin);
-//        Log.v("MainActivity", "Root Radius Min Rounded Up: " + extRootMinRoundUp);
 
         //Major Diameter Max (standard)
         TextView stdExtMajorMax = (TextView) findViewById(R.id.std_ext_major_max);
-        stdExtMajorMax.setText(String.format("%.4f", sizeNominal));
+        stdExtMajorMax.setText(valuesStr[1]);
 
         //Major Diameter Min (standard)
         TextView stdExtMajorMin = (TextView) findViewById(R.id.std_ext_major_min);
-        stdExtMajorMin.setText(String.format("%.4f", extMajDiaStdMin));
+        stdExtMajorMin.setText(valuesStr[0]);
 
         //Major Diameter Max (no interference)
         TextView extMajorMaxNI = (TextView) findViewById(R.id.no_ext_major_max);
-        extMajorMaxNI.setText(String.format("%.4f", extMajDiaNoIntMax));
+        extMajorMaxNI.setText(valuesStr[3]);
 
         //Major Diameter Min (no interference)
         TextView extMajorMinNI = (TextView) findViewById(R.id.no_ext_major_min);
-        extMajorMinNI.setText(String.format("%.4f", extMajDiaNoIntMin));
+        extMajorMinNI.setText(valuesStr[2]);
 
         //Major Diameter Max (.0002 interference)
         TextView extMajorMax0002 = (TextView) findViewById(R.id.some_ext_major_max);
-        extMajorMax0002.setText(String.format("%.4f", extMajDia0002Max));
+        extMajorMax0002.setText(valuesStr[5]);
 
         //Major Diameter Min (.0002 interference)
         TextView extMajorMin0002 = (TextView) findViewById(R.id.some_ext_major_min);
-        extMajorMin0002.setText(String.format("%.4f", extMajDia0002Min));
+        extMajorMin0002.setText(valuesStr[4]);
 
         //Pitch Diameter Max
         TextView extPitchMax = (TextView) findViewById(R.id.ext_pitch_max);
-        //extPitchMax.setText(String.format("%.4f", extPitchDiaMax));
-        extPitchMax.setText(dfFloor.format(extPitchDiaMax));
+        extPitchMax.setText(valuesStr[7]);
 
         //Pitch Diameter Min
         TextView extPitchMin = (TextView) findViewById(R.id.ext_pitch_min);
-        //extPitchMin.setText(String.format("%.4f", extPitchDiaMin));
-        extPitchMin.setText(dfFloor.format(extPitchDiaMin));
+        extPitchMin.setText(valuesStr[6]);
 
         //Minor Diameter Max
         TextView extMinorMax = (TextView) findViewById(R.id.ext_minor_max);
-        //extMinorMax.setText(String.format("%.4f", extMinorDiaMax));
-        extMinorMax.setText(dfFloor.format(extMinorDiaMax));
+        extMinorMax.setText(valuesStr[9]);
 
         //Minor Diameter Min
         TextView extMinorMin = (TextView) findViewById(R.id.ext_minor_min);
-        //extMinorMin.setText(String.format("%.4f", extMinorDiaMin));
-        extMinorMin.setText(dfFloor.format(extMinorDiaMin));
+        extMinorMin.setText(valuesStr[8]);
 
         //Root Radius Max
         TextView extRootMaxV = (TextView) findViewById(R.id.ext_root_max);
-        //String extRootMaxString = dfFloor.format(extRootMax);
-        //double extRootMaxRoundDown = Double.parseDouble(extRootMaxString);
-        //extRootMaxV.setText(String.format("%.4f", extRootMax));
-        extRootMaxV.setText(dfFloor.format(extRootMax));
+        extRootMaxV.setText(valuesStr[11]);
 
         //Root Radius Min
         TextView extRootMinV = (TextView) findViewById(R.id.ext_root_min);
-        //extRootMinV.setText(String.format("%.4f", extRootMin));
-        extRootMinV.setText(dfCeiling.format(extRootMin));
+        extRootMinV.setText(valuesStr[10]);
 
         //Major Diameter Max
         TextView intMajorMax = (TextView) findViewById(R.id.int_major_max);
-        intMajorMax.setText(String.format("%.4f", sizeNominal));
+        intMajorMax.setText(valuesStr[13]);
 
         //Major Diameter Min
         TextView intMajorMin = (TextView) findViewById(R.id.int_major_min);
-        intMajorMin.setText(String.format("%.4f", intMajMin));
+        intMajorMin.setText(valuesStr[12]);
 
         //Pitch Diameter Max
         TextView intPitchMaxV = (TextView) findViewById(R.id.int_pitch_max);
-        intPitchMaxV.setText(String.format("%.4f", intPitchMax));
+        intPitchMaxV.setText(valuesStr[15]);
 
         //Pitch Diameter Min
         TextView intPitchMinV = (TextView) findViewById(R.id.int_pitch_min);
-        intPitchMinV.setText(String.format("%.4f", intPitchMin));
+        intPitchMinV.setText(valuesStr[14]);
 
         //Minor Diameter Max
         TextView intMinMaxV = (TextView) findViewById(R.id.int_minor_max);
-        intMinMaxV.setText(String.format("%.4f", intMinorMax));
+        intMinMaxV.setText(valuesStr[17]);
 
         //Pitch Diameter Min
         TextView intMinMinV = (TextView) findViewById(R.id.int_minor_min);
-        intMinMinV.setText(String.format("%.4f", intMinorMin));
-
-
-
-
-
+        intMinMinV.setText(valuesStr[16]);
     }
 
-    //Calculate Major Diameter Min (standard)
-    private double calcMajorDiaStdMin() {
-        return sizeNominal - 0.06*Math.pow(Math.pow(1.0/inputPitch,2), (1.0/3));
-    }
-
-    //Calculate Min Major Diameter Reduction due to Largest Female Thread Fillet
-    private double minMajDiaReduc() {
-        return 2*(((MAX_ROOT_INT_THD*0.866025403784439)-(1.0/inputPitch/16))/0.577350269189626);
-    }
-
-    //Class 2A (External) Pitch Diameter Tolerance Per ASME B1.1-2003 pg 55 paragraph 5.8.1
-    private double toleranceClass2A(double majDia, int pitch) {
-        double lengthEngagement = majDia / 2;
-        double ans;
-        ans = 0.0015*Math.pow(majDia, (1.0/3)) + 0.0015*Math.pow(lengthEngagement, (1.0/2)) + 0.015*Math.pow((1.0/pitch), (2.0/3));
-        return ans;
-    }
-
-
-    //Calculate Major Diameter Min (works for no interference case and interference case)
-    private double minMajDia(double extMajDiaMax, double extMajDiaStdMin) {
-        double ans;
-        if ((extMajDiaMax - .003) < extMajDiaStdMin) {
-            ans = extMajDiaMax - .003;
-        }
-        else {
-            ans = extMajDiaStdMin;
-        }
-        return ans;
-    }
-
-    //Calculate Major Diameter Max (works for no interference case and interference case)
-    private double maxMajDia(double minMajDiaRed, double interference) {
-        double ans;
-        if (minMajDiaRed < 0) {
-            ans = sizeNominal;
-        }
-        else {
-            ans = sizeNominal - minMajDiaRed + interference;
-        }
-        return ans;
-    }
-
-    //Calculate Pitch Diameter Max
-    private double mExtPitchDiaMax(double majDia, int pitch) {
-        return majDia - 0.649519 / pitch;
-    }
-
-    //Calculate Minor Diameter Tolerance
-    private double mMinDiaTolFinal(double D, int p) {
-
-        double minorDiaTolRaw = (0.05*Math.pow(1.0/p, 2.0/3) + 0.03*(1.0/p)/D)-0.002;
-        double minorDiaTolLimitUpper = 0.259809 / p;
-        double minorDiaTolLimitLower = 0.135315 / p;
-        double minorDiaTol12OrLower = 0.12 / p;
-
-        Log.v("MainActivity", "Minor Dia Tol Raw: " + minorDiaTolRaw);
-        Log.v("MainActivity", "Minor Dia Tol Limit Upper: " + minorDiaTolLimitUpper);
-        Log.v("MainActivity", "Minor Dia Tol Limit Lower: " + minorDiaTolLimitLower);
-        Log.v("MainActivity", "Minor Dia Tol pitch 12 or less: " + minorDiaTol12OrLower);
-
-
-
-        if (p < 13) {
-            return minorDiaTol12OrLower;
-        }
-        else {
-            if ((minorDiaTolRaw >= minorDiaTolLimitLower) && (minorDiaTolRaw <= minorDiaTolLimitUpper)) {
-                return minorDiaTolRaw;
-            }
-            else {
-                if (minorDiaTolRaw > minorDiaTolLimitUpper) {
-                    return minorDiaTolLimitUpper;
-                }
-                else {
-                    return minorDiaTolLimitLower;
-                }
-            }
-        }
-
+    public void thdNote(View view){
+        Intent intent = new Intent(this, SecondActivity.class);
+        intent.putExtra(VALUE, "My custom string value");
+        startActivity(intent);
     }
 
 
