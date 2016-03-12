@@ -3,13 +3,16 @@ package com.example.android.screwthreads;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+//import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +31,7 @@ public class SecondActivity extends AppCompatActivity {
     private Intent intent = getIntent();
     private String threadSubject;
     private String emailText;
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class SecondActivity extends AppCompatActivity {
 
         DecimalFormat dfNormal = new DecimalFormat("0.0000");
         dfNormal.setRoundingMode(RoundingMode.HALF_UP);
+
 
         String value = getIntent().getExtras().getString(VALUE);
 
@@ -149,8 +154,16 @@ public class SecondActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-// Inflate the menu; this adds items to the action bar if it is present.
+
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_second, menu);
+
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+
+        // Fetch and store  ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
         return true;
     }
 
@@ -158,39 +171,42 @@ public class SecondActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 // Handle action bar item clicks here. The action bar will
 // automatically handle clicks on the Home/Up button, so long
-// as you specify a parent activity in AndroidManifest.xml.
+// as you specify a parent activity in AndroidManifecst.xml.
         int id = item.getItemId();
 
-//noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_item_share:
+                sendData();
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
-    public void sendEmail(View view){
-        String[] emailAddresses = new String[1];
-
-        EditText emailAddressTextBox = (EditText) findViewById(R.id.email_address);
-        emailAddresses[0] = emailAddressTextBox.getText().toString();
 
 
-//        Intent intent = new Intent(Intent.ACTION_SENDTO);
-//        intent.setType("text/html");
-//        intent.putExtra(Intent.EXTRA_EMAIL, emailAddresses);
-//        intent.putExtra(Intent.EXTRA_SUBJECT, threadSubject);
-//        intent.putExtra(Intent.EXTRA_TEXT, emailText);
+    // Call to update the share intent
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }
 
-        //startActivity(Intent.createChooser(intent, "Send Email"));
-
+    public void sendData(){
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-        intent.putExtra(Intent.EXTRA_EMAIL, emailAddresses);
         intent.putExtra(Intent.EXTRA_SUBJECT, threadSubject);
         intent.putExtra(Intent.EXTRA_TEXT, emailText);
+        setShareIntent(intent);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
     }
+
+
+
 }
