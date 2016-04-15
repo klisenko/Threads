@@ -1,0 +1,22 @@
+﻿4/7/2016
+
+
+Name:  Jack R. Lisenko
+
+
+Class:  GDG Seattle Android Study Jams Final Project
+
+
+Final Project:  10 Calculations with Screw Threads
+
+
+My final project App focuses on information needed by engineers to design custom screw threads.  I choose this project because I work as an mechanical engineer and use these calculations on a regular basis.  I thought it would be useful to have an App that I could use anywhere without my laptop.  An example of this would be in a meeting.
+
+
+The user enters two inputs in the App at the top of the main screen.  The first input is the nominal screw thread size.  The second input is the threads per inch.  While this info is being entered by the user, the calculations are continuously updated.  Furthermore, if the user decides to change one of the inputs, the user can simply touch the input box and start entering a new number.  There is no need to position a cursor and backspace or move the cursor.  The App is designed to select the entire number so that it can be changed quickly.  I wanted the App to be able to efficiently provide the information needed by the user with minimal effort.
+
+
+Once the user enters input, the App provides 10 outputs the relate to thread design.  This information is used on engineering drawings to machine screw threads.  The output values are for External Thread and Internal Threads.  The thread values are displayed for Major Diameter, Pitch Diameter, Minor Diameter, and Root Radius.
+
+
+The user can click the Thread Note button.  This will take the user to a new screen which shows the thread information displayed as it would be on a drawing note.  From that screen the user can send the thread information to email.
