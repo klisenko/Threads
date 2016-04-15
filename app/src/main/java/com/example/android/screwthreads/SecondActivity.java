@@ -41,9 +41,6 @@ public class SecondActivity extends AppCompatActivity {
         DecimalFormat dfNormal = new DecimalFormat("0.0000");
         dfNormal.setRoundingMode(RoundingMode.HALF_UP);
 
-
-        String value = getIntent().getExtras().getString(VALUE);
-
         double[] threadData = MainActivity.thread.getValues();
         ConvertToString stringClass = new ConvertToString(MainActivity.thread);
         String[] valuesStr = stringClass.getStrings(MainActivity.thread);
@@ -51,8 +48,6 @@ public class SecondActivity extends AppCompatActivity {
         String majorDiameterString = dfNormal.format(MainActivity.sizeNominal);
 
         threadSubject = majorDiameterString + " - " + MainActivity.inputPitch + " UNJS THREAD PER SAE AS8879";
-
-
 
         //External Thread call out
         TextView externalThreadNote = (TextView) findViewById(R.id.thread_note_external);
@@ -125,8 +120,6 @@ public class SecondActivity extends AppCompatActivity {
 
         StringBuilder builder = new StringBuilder();
 
-        //int arrayLength = valuesStr.length;
-
         String[] threadNames = {"MAJOR DIAMETER", "PITCH DIAMETER", "MINOR DIAMETER", "ROOT RADIUS", "MAJOR DIAMETER", "PITCH DIAMETER", "MINOR DIAMETER"};
 
         builder.append("EXTERNAL THREAD\n");
@@ -141,14 +134,7 @@ public class SecondActivity extends AppCompatActivity {
         builder.append(threadNames[5] + ": " + valuesStr[14] + " TO " + valuesStr[15] + "\n");
         builder.append(threadNames[6] + ": " + valuesStr[16] + " TO " + valuesStr[17] + "\n");
 
-
-
-
         emailText = builder.toString();
-        Log.v("MainActivity", "Array of Strings " + emailText);
-
-
-
 
         //Toast.makeText(this, value, Toast.LENGTH_LONG).show();
     }

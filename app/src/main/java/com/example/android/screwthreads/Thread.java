@@ -5,7 +5,7 @@ import android.util.Log;
 import java.math.RoundingMode;
 
 /**
- * Created by klisenko on 1/3/16.
+ * Created by klisenko
  */
 public class Thread {
     private double d;

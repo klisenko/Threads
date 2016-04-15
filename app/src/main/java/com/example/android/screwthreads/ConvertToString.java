@@ -7,17 +7,15 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 /**
- * Created by klisenko on 1/6/16.
+ * Created by klisenko
+ * Convert all the values to strings using 4 decimal places
+ * Some of the values are rounded down, some up.  Depends on the type of thread dimension
  */
 public class ConvertToString {
-    private Thread d;
-    //private double[] tableValues = new double[20];
+    //private Thread d;
 
-    public ConvertToString(Thread d) {
-        this.d = d;
-
-        //Get the values from the Thread instance;
-
+    public ConvertToString(Thread thread) {
+    //    d = thread;
     }
 
     public String[] getStrings(Thread d) {
@@ -40,7 +38,7 @@ public class ConvertToString {
             j = j + 1;
         }
 
-        Log.v("MainActivity", "Name: " + roundKey[0]);
+        //Log.v("MainActivity", "Name: " + roundKey[0]);
 
         int arrayLength = tableValues.length;
 

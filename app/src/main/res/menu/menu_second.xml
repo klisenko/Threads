@@ -4,15 +4,21 @@
 
     tools:context="com.app.example.twoactivitiesexample.SecondActivity">
 
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
-
     <item
         android:id="@+id/menu_item_share"
-        android:title="Share"
+        android:title="Email"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_share_white_24dp"
         android:actionProviderClass=
             "android.widget.ShareActionProvider" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+
 
 </menu>

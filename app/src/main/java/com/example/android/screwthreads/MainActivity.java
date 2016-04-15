@@ -3,6 +3,7 @@ package com.example.android.screwthreads;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -28,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static double sizeNominal = .2500;
     public static int inputPitch = 16;
-    static double MAX_ROOT_INT_THD = .008;
-    private String[] tableValues = new String[22];
 
     public final static String VALUE = "myValue";
     public static Thread thread;
@@ -42,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
             int pitch = savedInstanceState.getInt("inputPitch");
             sizeNominal = size;
             inputPitch = pitch;
-
-            Log.v("MainActivity", "onCreate - Size " + sizeNominal);
         }
 
         super.onCreate(savedInstanceState);
@@ -52,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
         Log.v("MainActivity", "onCreate after - Size " + sizeNominal);
         thread = new Thread(sizeNominal, inputPitch);
         double[] values = thread.getValues();
-
-        Log.v("MainActivity", "onCreate - External Thread Major Diameter Standard Minimum " + values[0]);
 
         setContentView(R.layout.activity_main);
 
@@ -65,17 +60,7 @@ public class MainActivity extends AppCompatActivity {
         EditText threadSizeInput = (EditText)findViewById(R.id.nominal_size);
         threadSizeInput.addTextChangedListener(nomSizeWatcher);
 
-        //On Focus Change Listener
-        //threadSizeInput.setOnFocusChangeListener(mThreadInputListener);
-
         updateValues(thread);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
@@ -104,12 +89,7 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putDouble("sizeNominal", sizeNominal);
         savedInstanceState.putInt("inputPitch", inputPitch);
 
-
-
         double size = savedInstanceState.getDouble("sizeNominal");
-
-        Log.v("MainActivity", "onSaveInstanceState - Pitch " + inputPitch);
-        Log.v("MainActivity", "onSaveInstanceState - Size " + size);
 
     }
 
@@ -132,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
             //InputPitch = Double.parseDouble(pitch);
             inputPitch = Integer.parseInt(pitch);
-            Log.v("MainActivity", "Name: " + inputPitch);
 
             thread.setValues(sizeNominal, inputPitch);
             updateValues(thread);
@@ -167,17 +146,11 @@ public class MainActivity extends AppCompatActivity {
 
             sizeNominal = Double.parseDouble(threadSize);
             //Log.v("MainActivity", "Name: " + sizeNominal);
-            Log.v("MainActivity", "Name: " + threadSize);
             //Log.v("MainActivity", "Name: " + strLength);
-
-
 
             thread.setValues(sizeNominal, inputPitch);
             updateValues(thread);
 
-            //Major Diameter Min (standard)
-            //TextView stdExtMajorMin = (TextView) findViewById(R.id.std_ext_major_min);
-            //stdExtMajorMin.setText(pitch);
         }
 
         @Override
@@ -193,9 +166,6 @@ public class MainActivity extends AppCompatActivity {
         ConvertToString stringClass = new ConvertToString(thread);
         String[] valuesStr;
         valuesStr = stringClass.getStrings(thread);
-
-        Log.v("MainActivity", "Major Dia.: " + valuesStr[0]);
-
 
         //Major Diameter Max (standard)
         TextView stdExtMajorMax = (TextView) findViewById(R.id.std_ext_major_max);
@@ -275,7 +245,5 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(VALUE, "My custom string value");
         startActivity(intent);
     }
-
-
 
 }
